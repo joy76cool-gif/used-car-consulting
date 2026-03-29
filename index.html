@@ -3,537 +3,598 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>散客收車系統提案</title>
+  <title>昇昇賣好車 — 散客收車系統提案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --ink: #0a0a0a;
+      --paper: #f5f0e8;
+      --cream: #ede7db;
+      --rust: #c44b25;
+      --rust-light: #f4ddd5;
+      --slate: #5a5a52;
+      --ghost: #b8b0a2;
+      --white: #fefcf8;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f8f7f4;
-      color: #2d2d2d;
-      line-height: 1.8;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--rust);
+      color: var(--white);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
     }
 
     .container {
-      max-width: 720px;
+      max-width: 680px;
       margin: 0 auto;
-      padding: 40px 24px;
+      padding: 0 28px;
     }
 
-    /* Hero */
+    /* ── Hero ── */
     .hero {
-      text-align: center;
-      padding: 60px 20px;
-      margin-bottom: 48px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding: 80px 0;
     }
 
-    .hero-label {
-      font-size: 13px;
-      letter-spacing: 3px;
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      color: #999;
-      margin-bottom: 16px;
+      color: var(--rust);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
     }
 
     .hero h1 {
-      font-size: 32px;
-      font-weight: 700;
-      line-height: 1.4;
-      margin-bottom: 16px;
-      color: #1a1a1a;
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(42px, 8vw, 72px);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
     }
 
-    .hero p {
+    .hero h1 em {
+      font-style: italic;
+      color: var(--rust);
+    }
+
+    .hero-sub {
       font-size: 17px;
-      color: #666;
-      max-width: 520px;
-      margin: 0 auto;
+      font-weight: 300;
+      color: var(--slate);
+      max-width: 420px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
     }
 
-    /* Section */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--ghost);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1s forwards;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: var(--ghost);
+      margin-top: 8px;
+      animation: pulse 2s ease infinite;
+    }
+
+    /* ── Sections ── */
     .section {
-      margin-bottom: 48px;
+      padding: 100px 0;
+      border-top: 1px solid rgba(0,0,0,0.06);
     }
 
-    .section-number {
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: #bbb;
-      margin-bottom: 8px;
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--ghost);
+      margin-bottom: 12px;
     }
 
     .section h2 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: #1a1a1a;
-    }
-
-    .section h3.sub {
-      font-size: 18px;
-      font-weight: 600;
-      margin: 32px 0 16px 0;
-      color: #1a1a1a;
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 28px;
     }
 
     .section p {
       font-size: 16px;
-      color: #555;
-      margin-bottom: 16px;
+      color: var(--slate);
+      margin-bottom: 20px;
+      font-weight: 300;
     }
 
-    /* Cards */
+    .section p strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ── Stat Block ── */
+    .stat-block {
+      margin: 48px 0;
+      padding: 48px 0;
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .stat {
+      text-align: left;
+    }
+
+    .stat-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 64px;
+      line-height: 1;
+      color: var(--rust);
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--slate);
+      font-weight: 300;
+    }
+
+    .stat-source {
+      grid-column: 1 / -1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--ghost);
+      margin-top: -8px;
+    }
+
+    .stat-source a {
+      color: var(--ghost);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* ── Cards ── */
+    .card-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin: 36px 0;
+    }
+
     .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 28px;
-      margin-bottom: 16px;
-      border: 1px solid #eee;
+      background: var(--white);
+      padding: 32px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:first-child { border-radius: 12px 12px 0 0; }
+    .card:last-child { border-radius: 0 0 12px 12px; }
+    .card:only-child { border-radius: 12px; }
+
+    .card:hover {
+      transform: translateX(4px);
     }
 
     .card h3 {
-      font-size: 17px;
-      font-weight: 600;
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      font-weight: 400;
       margin-bottom: 8px;
-      color: #1a1a1a;
     }
 
     .card p {
       font-size: 15px;
-      color: #666;
+      color: var(--slate);
       margin-bottom: 0;
+      font-weight: 300;
     }
 
-    /* Highlight card */
-    .card-highlight {
-      background: #1a1a1a;
-      color: #fff;
-      border: none;
-    }
-
-    .card-highlight h3 {
-      color: #fff;
-    }
-
-    .card-highlight p {
-      color: #ccc;
-    }
-
-    /* Stat highlight */
-    .stat-card {
-      background: #fff3e0;
-      border: 2px solid #ff9800;
-      border-radius: 12px;
-      padding: 28px;
-      margin: 24px 0;
-      text-align: center;
-    }
-
-    .stat-card .stat-number {
-      font-size: 48px;
-      font-weight: 800;
-      color: #e65100;
-      line-height: 1.2;
-      margin-bottom: 8px;
-    }
-
-    .stat-card .stat-desc {
-      font-size: 16px;
-      color: #555;
-      margin-bottom: 4px;
-    }
-
-    .stat-card .stat-source {
-      font-size: 12px;
-      color: #999;
-      margin-top: 12px;
-    }
-
-    .stat-card .stat-source a {
-      color: #999;
-      text-decoration: underline;
-    }
-
-    /* Phase label */
-    .phase-label {
+    /* ── Phase ── */
+    .phase-tag {
       display: inline-block;
-      font-size: 11px;
-      letter-spacing: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 16px;
+      padding: 4px 14px;
+      border: 1px solid var(--ink);
+      border-radius: 100px;
+      margin-bottom: 20px;
     }
 
-    .phase-1 {
-      background: #e8f5e9;
-      color: #2e7d32;
+    .phase-tag.p2 {
+      border-color: var(--rust);
+      color: var(--rust);
     }
 
-    .phase-2 {
-      background: #e3f2fd;
-      color: #1565c0;
-    }
-
-    /* Flow */
+    /* ── Flow Steps ── */
     .flow {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin: 24px 0;
-    }
-
-    .flow-step {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
+      margin: 40px 0;
       position: relative;
-      padding-bottom: 32px;
+      padding-left: 48px;
     }
 
-    .flow-step:last-child {
-      padding-bottom: 0;
-    }
-
-    .flow-dot {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      border-radius: 50%;
-      background: #1a1a1a;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 600;
-      position: relative;
-      z-index: 1;
-    }
-
-    .flow-step:not(:last-child) .flow-dot::after {
+    .flow::before {
       content: '';
       position: absolute;
-      top: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: calc(100% + 12px);
-      background: #e0e0e0;
+      left: 15px;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--ink), transparent);
     }
 
-    .flow-content h4 {
+    .flow-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .flow-item:last-child { margin-bottom: 0; }
+
+    .flow-item::before {
+      content: '';
+      position: absolute;
+      left: -40px;
+      top: 10px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 1px var(--ink);
+    }
+
+    .flow-item h4 {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 500;
       margin-bottom: 4px;
-      padding-top: 8px;
     }
 
-    .flow-content p {
+    .flow-item p {
       font-size: 14px;
-      color: #888;
+      color: var(--slate);
+      font-weight: 300;
       margin-bottom: 0;
     }
 
-    /* Who does what */
-    .role-grid {
+    /* ── Compare ── */
+    .compare-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 24px 0;
+      gap: 2px;
+      margin: 36px 0;
     }
 
-    .role-box {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      border: 1px solid #eee;
-    }
-
-    .role-box h4 {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: #999;
-    }
-
-    .role-box ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .role-box ul li {
-      font-size: 15px;
-      padding: 6px 0;
-      color: #444;
-      border-bottom: 1px solid #f5f5f5;
-    }
-
-    .role-box ul li:last-child {
-      border-bottom: none;
-    }
-
-    /* Comparison */
-    .compare {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 24px 0;
-    }
-
-    .compare-box {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      border: 1px solid #eee;
+    .compare-cell {
+      padding: 36px 28px;
+      background: var(--white);
       text-align: center;
     }
 
-    .compare-box.highlight {
-      background: #1a1a1a;
-      border: none;
-      color: #fff;
+    .compare-cell:first-child { border-radius: 12px 0 0 12px; }
+    .compare-cell:last-child {
+      border-radius: 0 12px 12px 0;
+      background: var(--ink);
+      color: var(--paper);
     }
 
-    .compare-label {
-      font-size: 13px;
-      color: #999;
-      margin-bottom: 8px;
+    .compare-cell .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ghost);
+      margin-bottom: 12px;
     }
 
-    .compare-box.highlight .compare-label {
-      color: #aaa;
+    .compare-cell .value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
     }
 
-    .compare-value {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 4px;
+    .compare-cell:last-child .value {
+      color: var(--rust-light);
     }
 
-    .compare-box.highlight .compare-value {
-      color: #fff;
+    .compare-cell .note {
+      font-size: 12px;
+      color: var(--ghost);
+      margin-top: 8px;
     }
 
-    .compare-note {
-      font-size: 13px;
-      color: #999;
+    /* ── Roles ── */
+    .role-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin: 36px 0;
     }
 
-    /* Table */
-    .simple-table {
-      width: 100%;
-      margin: 20px 0;
+    .role-col {
+      background: var(--white);
+      padding: 32px;
     }
 
-    .table-row {
+    .role-col:first-child { border-radius: 12px 0 0 12px; }
+    .role-col:last-child { border-radius: 0 12px 12px 0; }
+
+    .role-col h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ghost);
+      margin-bottom: 20px;
+    }
+
+    .role-col ul {
+      list-style: none;
+    }
+
+    .role-col li {
+      font-size: 15px;
+      font-weight: 300;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      color: var(--slate);
+    }
+
+    .role-col li:last-child { border-bottom: none; }
+
+    /* ── Table ── */
+    .info-table {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 8px 0;
+      margin: 36px 0;
+    }
+
+    .info-row {
       display: flex;
       justify-content: space-between;
-      padding: 14px 0;
-      border-bottom: 1px solid #eee;
+      align-items: center;
+      padding: 16px 32px;
       font-size: 15px;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
     }
 
-    .table-row:last-child {
-      border-bottom: none;
+    .info-row:last-child { border-bottom: none; }
+
+    .info-row .label {
+      color: var(--ghost);
+      font-weight: 300;
     }
 
-    .table-label {
-      color: #888;
-    }
-
-    .table-value {
-      font-weight: 600;
-      color: #1a1a1a;
+    .info-row .value {
+      font-weight: 500;
       text-align: right;
     }
 
-    /* Divider */
-    .divider {
-      height: 1px;
-      background: #e8e8e8;
-      margin: 48px 0;
+    /* ── Callout ── */
+    .callout {
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 12px;
+      padding: 40px 36px;
+      margin: 36px 0;
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.8;
     }
 
-    /* Footer */
+    .callout strong {
+      color: var(--rust-light);
+      font-weight: 500;
+    }
+
+    /* ── Footer ── */
     .footer {
+      padding: 60px 0;
+      border-top: 1px solid rgba(0,0,0,0.06);
       text-align: center;
-      padding: 40px 20px;
-      color: #bbb;
-      font-size: 13px;
     }
 
-    /* Responsive */
-    @media (max-width: 480px) {
-      .hero h1 { font-size: 26px; }
-      .compare { grid-template-columns: 1fr; }
-      .role-grid { grid-template-columns: 1fr; }
-      .container { padding: 24px 16px; }
+    .footer p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--ghost);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 540px) {
+      .stat-block { grid-template-columns: 1fr; gap: 24px; }
+      .stat-number { font-size: 48px; }
+      .compare-row { grid-template-columns: 1fr; }
+      .compare-cell:first-child { border-radius: 12px 12px 0 0; }
+      .compare-cell:last-child { border-radius: 0 0 12px 12px; }
+      .role-row { grid-template-columns: 1fr; }
+      .role-col:first-child { border-radius: 12px 12px 0 0; }
+      .role-col:last-child { border-radius: 0 0 12px 12px; }
+      .container { padding: 0 20px; }
+      .hero { min-height: auto; padding: 120px 0 80px; }
     }
   </style>
 </head>
 <body>
+
   <div class="container">
 
     <!-- Hero -->
     <div class="hero">
-      <div class="hero-label">提案書</div>
-      <h1>讓想賣車的人<br>主動找到你</h1>
-      <p>為「昇昇賣好車」打造的兩階段散客收車系統，在現有車行管道之外，打開全新的收車來源</p>
+      <div class="hero-eyebrow">Proposal for 昇昇賣好車</div>
+      <h1>讓想賣車的人，<br><em>主動找到你</em></h1>
+      <p class="hero-sub">兩階段系統，在現有車行管道之外，打開全新的散客收車來源。</p>
+      <div class="scroll-hint">Scroll</div>
     </div>
 
     <!-- 01 現況 -->
     <div class="section">
-      <div class="section-number">01</div>
-      <h2>你現在的狀況</h2>
-      <p>你的採購能力很強——9年經驗，不用看車就能報出準確的收購價。車源主要靠原廠業務轉介，穩定但要被抽一手。</p>
+      <div class="section-num">01 — 現況</div>
+      <h2>9 年經驗，不用看車就能報價</h2>
+      <p>你的採購直覺是最大的武器。但車源 7-8 成靠原廠業務轉介，每台被抽約 NT$10,000。穩定，但成本在別人手上。</p>
+      <p><strong>缺少的那一塊：散客直接找你賣車。</strong>不用被抽、收購成本更低、毛利更高。但現在沒有穩定的管道。</p>
 
-      <div class="card">
-        <h3>現有管道</h3>
-        <p>原廠業務轉介佔 7-8 成，每台被抽約 NT$10,000。穩定，但成本在別人手上。</p>
+      <div class="stat-block">
+        <div class="stat">
+          <div class="stat-number">78%</div>
+          <div class="stat-label">的車主會跟第一個回覆的車行成交</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">21x</div>
+          <div class="stat-label">5 分鐘內回覆 vs 30 分鐘後的成交率差距</div>
+        </div>
+        <div class="stat-source">Source: <a href="https://dealerstudio.ai/ai-chatbots-in-automotive-retail-statistics/" target="_blank">Dealer Studio AI — Automotive Retail Statistics</a></div>
       </div>
 
-      <div class="card-highlight card">
-        <h3>缺少的那一塊</h3>
-        <p>散客直接找你賣車——不用被抽、收購成本更低、毛利更高。但現在沒有穩定的管道讓散客找到你。</p>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-number">78%</div>
-        <div class="stat-desc">的買車人會跟<strong>第一個回覆的車行</strong>成交</div>
-        <div style="height: 20px;"></div>
-        <div class="stat-number">21x</div>
-        <div class="stat-desc">5 分鐘內回覆的成交率，是 30 分鐘後回覆的 <strong>21 倍</strong></div>
-        <p class="stat-source">資料來源：<a href="https://dealerstudio.ai/ai-chatbots-in-automotive-retail-statistics/" target="_blank">Dealer Studio AI — AI Chatbots in Automotive Retail Statistics</a></p>
-      </div>
-
-      <p>這代表什麼？<strong>誰先回覆，誰就拿到這台車。</strong>自動化通知系統讓你在散客送出估價的那一秒就收到通知，比任何競爭對手都快。</p>
+      <p>這代表什麼？<strong>誰先回覆，誰就拿到這台車。</strong>自動化通知讓你在散客送出估價的那一秒就收到通知，比任何人都快。</p>
     </div>
-
-    <div class="divider"></div>
 
     <!-- 02 Phase 1 -->
     <div class="section">
-      <div class="section-number">02</div>
-      <span class="phase-label phase-1">PHASE 1</span>
-      <h2>讓散客主動來找你</h2>
-      <p>建立一套線上估價系統：散客 30 秒填完資料，你收到通知秒報價，系統自動追蹤到成交。</p>
+      <div class="section-num">02 — Phase 1</div>
+      <div class="phase-tag">讓散客主動來</div>
+      <h2>30 秒免費估價，你秒收到通知</h2>
+      <p>一套線上估價系統。散客填完資料，你收到通知，秒報價，系統自動追蹤到成交。</p>
 
       <div class="flow">
-        <div class="flow-step">
-          <div class="flow-dot">1</div>
-          <div class="flow-content">
-            <h4>線上免費估價表單</h4>
-            <p>散客填車款、年份、里程、傳 4 張照片，30 秒送出。不用打電話、不用跑來，門檻降到最低。</p>
-          </div>
+        <div class="flow-item">
+          <h4>線上免費估價表單</h4>
+          <p>車款、年份、里程、4 張照片，30 秒送出。不用打電話不用跑來，門檻降到最低。</p>
         </div>
-        <div class="flow-step">
-          <div class="flow-dot">2</div>
-          <div class="flow-content">
-            <h4>你收到通知，秒回報價</h4>
-            <p>表單一送出，LINE 馬上通知你，車輛資訊 + 照片一次看完。用你的經驗直接報價，快、準。</p>
-          </div>
+        <div class="flow-item">
+          <h4>LINE 即時通知</h4>
+          <p>表單一送出，你的 LINE 馬上跳通知。車輛資訊加照片一次看完，直接報價。</p>
         </div>
-        <div class="flow-step">
-          <div class="flow-dot">3</div>
-          <div class="flow-content">
-            <h4>客戶自動追蹤</h4>
-            <p>每筆估價自動建檔，報價後系統持續追蹤。3 天沒回覆自動提醒你跟進，7 天再提醒一次。不漏接任何一個機會。</p>
-          </div>
+        <div class="flow-item">
+          <h4>客戶自動追蹤</h4>
+          <p>每筆自動建檔。報價後 3 天沒回覆，系統提醒你跟進。7 天再提醒一次。不漏接。</p>
         </div>
-        <div class="flow-step">
-          <div class="flow-dot">4</div>
-          <div class="flow-content">
-            <h4>成交紀錄 + 對帳</h4>
-            <p>成交的標記起來，Google Sheets 自動記錄每筆來源、報價、成交價。月底對帳一目瞭然。</p>
-          </div>
+        <div class="flow-item">
+          <h4>成交紀錄 + 月底對帳</h4>
+          <p>Google Sheets 自動記錄每筆來源、報價、成交價。透明、清楚。</p>
         </div>
       </div>
 
-      <h3 class="sub">你的內容，幫你導流</h3>
-      <p>你已經有人在做短影音，只要在每支影片結尾加一句：「想知道你的車值多少？點連結 30 秒免費估價。」，每支影片都在幫你導客。</p>
-
-      <div class="card">
-        <h3>建議的內容方向</h3>
-        <p>教觀眾判斷車價（「你的車被低估了嗎？」）、收車實拍過程、真實成交故事——這些都能建立信任，讓想賣車的人找到你。內容由你的團隊產出，我提供主題建議。</p>
+      <div class="card-stack">
+        <div class="card">
+          <h3>你的短影音，幫你導流</h3>
+          <p>你已經有人在做影片。每支結尾加一句「想知道你的車值多少？點連結 30 秒免費估價」，每支影片都在幫你找散客。內容由你的團隊產出，我提供主題方向建議。</p>
+        </div>
       </div>
     </div>
-
-    <div class="divider"></div>
 
     <!-- 03 Phase 2 -->
     <div class="section">
-      <div class="section-number">03</div>
-      <span class="phase-label phase-2">PHASE 2</span>
-      <h2>主動出擊找賣家</h2>
-      <p>Phase 1 是等散客來，Phase 2 是你去找他們。系統每天自動掃 FB 社團和 Marketplace 上想賣車的人，幫你主動接觸。</p>
+      <div class="section-num">03 — Phase 2</div>
+      <div class="phase-tag p2">主動出擊</div>
+      <h2>每天自動找到想賣車的人</h2>
+      <p>Phase 1 等散客來，Phase 2 去找他們。系統每天掃 FB 社團和 Marketplace，主動接觸正在賣車的人。</p>
 
       <div class="flow">
-        <div class="flow-step">
-          <div class="flow-dot">1</div>
-          <div class="flow-content">
-            <h4>自動掃描賣車貼文</h4>
-            <p>系統每天自動掃 FB 社團、Marketplace，篩選「賣車」「售」「換車」等關鍵字，找出正在賣車的人。</p>
-          </div>
+        <div class="flow-item">
+          <h4>自動掃描賣車貼文</h4>
+          <p>每天自動篩選「賣車」「售」「換車」等關鍵字，找出正在賣車的人。</p>
         </div>
-        <div class="flow-step">
-          <div class="flow-dot">2</div>
-          <div class="flow-content">
-            <h4>AI 生成客製化留言</h4>
-            <p>不是罐頭訊息。AI 會根據每篇貼文的車款、內容，產出自然的留言。像真人在聊天，不像廣告在推銷。</p>
-          </div>
+        <div class="flow-item">
+          <h4>AI 客製化留言</h4>
+          <p>不是罐頭訊息。根據每篇貼文的車款和內容，產出自然的留言。像真人在聊天。</p>
         </div>
-        <div class="flow-step">
-          <div class="flow-dot">3</div>
-          <div class="flow-content">
-            <h4>控制節奏，安全觸及</h4>
-            <p>每天 10-15 則留言，間隔隨機 15-30 分鐘，模擬真人使用習慣。不會被平台標記，不會被鎖帳號。</p>
-          </div>
+        <div class="flow-item">
+          <h4>控制節奏</h4>
+          <p>每天 10-15 則，間隔隨機，模擬真人習慣。不會被平台標記。</p>
         </div>
-        <div class="flow-step">
-          <div class="flow-dot">4</div>
-          <div class="flow-content">
-            <h4>對方回覆，你接手</h4>
-            <p>有人回應就通知你，你用專業跟對方聊。從線上對話到實際收車，後面都是你的強項。</p>
-          </div>
+        <div class="flow-item">
+          <h4>有人回覆，你接手</h4>
+          <p>有回應就通知你。從線上對話到實際收車，後面都是你的強項。</p>
         </div>
       </div>
     </div>
-
-    <div class="divider"></div>
 
     <!-- 04 比較 -->
     <div class="section">
-      <div class="section-number">04</div>
-      <h2>散客 vs 車行管道</h2>
-      <p>同一台車，收車來源不同，你的利潤差很多。</p>
+      <div class="section-num">04 — 算一筆帳</div>
+      <h2>同一台車，管道不同</h2>
 
-      <div class="compare">
-        <div class="compare-box">
-          <div class="compare-label">車行轉介</div>
-          <div class="compare-value">-$10,000</div>
-          <div class="compare-note">每台被抽轉介費</div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <div class="label">車行轉介</div>
+          <div class="value">-$10,000</div>
+          <div class="note">每台被抽轉介費</div>
         </div>
-        <div class="compare-box highlight">
-          <div class="compare-label">散客直接找你</div>
-          <div class="compare-value">$0</div>
-          <div class="compare-note">沒有中間人，成本更低</div>
+        <div class="compare-cell">
+          <div class="label">散客直接來</div>
+          <div class="value">$0</div>
+          <div class="note">沒有中間人</div>
         </div>
       </div>
 
-      <p>假設一個月多收 5 台散客的車，每台省 $10,000 轉介費 ＋ 收購成本更低帶來的額外毛利，一個月多賺 <strong>$50,000 以上</strong>不是問題。</p>
+      <div class="callout">
+        一個月多收 5 台散客的車，每台省 $10,000 轉介費，加上收購成本更低帶來的額外毛利——<strong>一個月多賺 $50,000 以上</strong>不是問題。
+      </div>
     </div>
-
-    <div class="divider"></div>
 
     <!-- 05 分工 -->
     <div class="section">
-      <div class="section-number">05</div>
-      <h2>誰做什麼</h2>
-      <p>講清楚，不會搞混。</p>
+      <div class="section-num">05 — 分工</div>
+      <h2>誰做什麼，講清楚</h2>
 
-      <div class="role-grid">
-        <div class="role-box">
+      <div class="role-row">
+        <div class="role-col">
           <h4>我負責</h4>
           <ul>
             <li>建置估價表單</li>
@@ -544,7 +605,7 @@
             <li>系統維護與優化</li>
           </ul>
         </div>
-        <div class="role-box">
+        <div class="role-col">
           <h4>你負責</h4>
           <ul>
             <li>收到通知後回報價</li>
@@ -556,80 +617,74 @@
       </div>
     </div>
 
-    <div class="divider"></div>
-
-    <!-- 06 費用 -->
+    <!-- 06 合作方式 -->
     <div class="section">
-      <div class="section-number">06</div>
-      <h2>合作方式</h2>
-      <p>我不收建置費。系統幫你帶來客人，有成交才收費。</p>
+      <div class="section-num">06 — 合作方式</div>
+      <h2>有成交才收費</h2>
+      <p>不收建置費。系統幫你帶來客人，成交了才分。</p>
 
-      <div class="card">
-        <div class="simple-table">
-          <div class="table-row">
-            <span class="table-label">系統建置</span>
-            <span class="table-value">免費</span>
-          </div>
-          <div class="table-row">
-            <span class="table-label">工具訂閱費（n8n 等）</span>
-            <span class="table-value">你負擔</span>
-          </div>
-          <div class="table-row">
-            <span class="table-label">散客成交抽成</span>
-            <span class="table-value">每台 NT$ ___</span>
-          </div>
-          <div class="table-row">
-            <span class="table-label">認定方式</span>
-            <span class="table-value">表單進來 或 FB留言觸及的</span>
-          </div>
-          <div class="table-row">
-            <span class="table-label">追蹤方式</span>
-            <span class="table-value">Google Sheets 雙方共用</span>
-          </div>
-          <div class="table-row">
-            <span class="table-label">結算</span>
-            <span class="table-value">每月對帳一次</span>
-          </div>
+      <div class="info-table">
+        <div class="info-row">
+          <span class="label">系統建置</span>
+          <span class="value">免費</span>
+        </div>
+        <div class="info-row">
+          <span class="label">工具訂閱費</span>
+          <span class="value">你負擔</span>
+        </div>
+        <div class="info-row">
+          <span class="label">散客成交抽成</span>
+          <span class="value">每台 NT$ ___</span>
+        </div>
+        <div class="info-row">
+          <span class="label">認定方式</span>
+          <span class="value">表單或 FB 留言觸及</span>
+        </div>
+        <div class="info-row">
+          <span class="label">追蹤</span>
+          <span class="value">Google Sheets 共用</span>
+        </div>
+        <div class="info-row">
+          <span class="label">結算</span>
+          <span class="value">每月對帳一次</span>
         </div>
       </div>
 
-      <p style="margin-top: 16px; font-size: 15px; color: #888;">車行轉介一台抽 $10,000。我的抽成比車行低，你的成本更低、毛利更高。有帶來客人才收錢，沒有風險。</p>
+      <p style="color: var(--ghost); font-size: 14px;">車行轉介一台抽 $10,000。我的抽成比車行低。你的成本更低、毛利更高。沒帶來客人就不收錢。</p>
     </div>
-
-    <div class="divider"></div>
 
     <!-- 07 時程 -->
     <div class="section">
-      <div class="section-number">07</div>
+      <div class="section-num">07 — 時程</div>
       <h2>多快可以開始</h2>
 
-      <div class="card">
-        <div class="simple-table">
-          <div class="table-row">
-            <span class="table-label">第 1 週</span>
-            <span class="table-value">估價表單上線 + 自動化串接</span>
-          </div>
-          <div class="table-row">
-            <span class="table-label">第 2 週</span>
-            <span class="table-value">客戶追蹤系統上線</span>
-          </div>
-          <div class="table-row">
-            <span class="table-label">第 3-4 週</span>
-            <span class="table-value">Phase 2 FB 掃描 + AI 留言啟動</span>
-          </div>
-          <div class="table-row">
-            <span class="table-label">第 2 個月起</span>
-            <span class="table-value">看數據優化，放大有效的管道</span>
-          </div>
+      <div class="info-table">
+        <div class="info-row">
+          <span class="label">第 1 週</span>
+          <span class="value">估價表單 + 自動化上線</span>
+        </div>
+        <div class="info-row">
+          <span class="label">第 2 週</span>
+          <span class="value">客戶追蹤系統上線</span>
+        </div>
+        <div class="info-row">
+          <span class="label">第 3-4 週</span>
+          <span class="value">Phase 2 FB 掃描啟動</span>
+        </div>
+        <div class="info-row">
+          <span class="label">第 2 個月起</span>
+          <span class="value">看數據優化，放大有效管道</span>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-      <p>Joy — AI Business Consulting<br>為「昇昇賣好車」提案</p>
+      <p>Joy — AI Business Consulting</p>
+      <p style="margin-top: 4px;">為「昇昇賣好車」提案</p>
     </div>
 
   </div>
+
 </body>
 </html>
